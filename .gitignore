@@ -11,3 +11,5 @@ client/.env*
 
 client/.vercel
 client/next-env.d.ts
+
+client/.next
