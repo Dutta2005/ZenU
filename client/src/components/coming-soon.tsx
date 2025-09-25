@@ -1,149 +1,167 @@
-"use client"
+import React from 'react';
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import type { ComingSoonViewProps } from '@/lib/types';
 
-import * as React from "react"
-import { Button } from "@/components/ui/button"
-import { MHCard } from "@/components/ui/mh-card"
-import { ArrowLeft } from "lucide-react"
-import { useRouter } from "next/navigation"
-
-interface ComingSoonProps {
-  title: string
-  description: string
-  icon: React.ReactNode
-  estimatedLaunch?: string
-}
-
-export function ComingSoon({ 
-  title, 
-  description, 
-  icon, 
-  estimatedLaunch = "Soon" 
-}: ComingSoonProps) {
-  const router = useRouter()
-
+const ComingSoonView: React.FC<ComingSoonViewProps> = ({ feature, palette, onBack }) => {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="content-safe py-4 flex items-center space-x-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => router.back()}
-          className="rounded-full"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-        <div>
-          <h1 className="text-headline">{title}</h1>
-          <p className="text-caption">Feature in development</p>
-        </div>
-      </header>
-
-      {/* Coming Soon Content */}
-      <div className="content-safe py-16">
-        <MHCard className="text-center p-8 space-y-6">
-          <div className="mx-auto w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center text-primary">
-            {icon}
-          </div>
-          
-          <div className="space-y-3">
-            <h2 className="text-headline">{title}</h2>
-            <p className="text-body-large text-muted-foreground">
-              {description}
-            </p>
-          </div>
-
-          <div className="bg-muted/50 rounded-xl p-4 space-y-2">
-            <p className="text-sm font-medium">Coming {estimatedLaunch}</p>
-            <p className="text-xs text-muted-foreground">
-              We're working hard to bring you this feature. Stay tuned for updates!
-            </p>
-          </div>
-
+    <div className="min-h-screen" style={{ background: palette.gradient }}>
+      <div className="min-h-screen" style={{ backgroundColor: palette.background }}>
+        <header className="px-4 py-4 flex items-center space-x-4">
           <Button
-            onClick={() => router.push('/')}
-            className="rounded-xl"
+            variant="ghost"
+            size="icon"
+            onClick={onBack}
+            className="rounded-full"
+            style={{ color: palette.primary }}
           >
-            Back to Dashboard
+            <ArrowLeft className="h-5 w-5" />
           </Button>
-        </MHCard>
+          <div>
+            <h1 
+              className="text-2xl font-semibold" 
+              style={{ color: palette.foreground }}
+            >
+              {feature.title}
+            </h1>
+            <p 
+              className="text-sm" 
+              style={{ color: palette.mutedForeground }}
+            >
+              Feature in development
+            </p>
+          </div>
+        </header>
 
-        {/* Feature Details */}
-        <div className="mt-8 space-y-4">
-          <h3 className="text-headline">What to expect:</h3>
-          <div className="space-y-3">
-            {title === "AI Chatbot" && (
-              <>
-                <MHCard className="p-4">
-                  <p className="text-sm">🌐 Multi-language support for regional languages</p>
-                </MHCard>
-                <MHCard className="p-4">
-                  <p className="text-sm">🤖 Empathetic AI trained on mental health conversations</p>
-                </MHCard>
-                <MHCard className="p-4">
-                  <p className="text-sm">🔒 Private and secure conversations</p>
-                </MHCard>
-              </>
-            )}
+        <div className="px-4 py-8 max-w-md mx-auto">
+          <div 
+            className="text-center p-8 space-y-6 rounded-2xl border" 
+            style={{ 
+              backgroundColor: palette.card,
+              borderColor: palette.border 
+            }}
+          >
+            <div 
+              className="mx-auto w-16 h-16 rounded-2xl flex items-center justify-center"
+              style={{ 
+                backgroundColor: `${palette.primary}20`,
+                color: palette.primary 
+              }}
+            >
+              {feature.icon}
+            </div>
             
-            {title === "Self-Assessment" && (
-              <>
-                <MHCard className="p-4">
-                  <p className="text-sm">📋 PHQ-9 and GAD-7 validated questionnaires</p>
-                </MHCard>
-                <MHCard className="p-4">
-                  <p className="text-sm">📊 Progress tracking over time</p>
-                </MHCard>
-                <MHCard className="p-4">
-                  <p className="text-sm">💡 Personalized insights and recommendations</p>
-                </MHCard>
-              </>
-            )}
-            
-            {title === "Daily Journaling" && (
-              <>
-                <MHCard className="p-4">
-                  <p className="text-sm">🔐 End-to-end encryption for privacy</p>
-                </MHCard>
-                <MHCard className="p-4">
-                  <p className="text-sm">📝 Guided prompts and reflection tools</p>
-                </MHCard>
-                <MHCard className="p-4">
-                  <p className="text-sm">📈 Mood pattern recognition</p>
-                </MHCard>
-              </>
-            )}
-            
-            {(title === "Peer Support" || title === "Peer Support Forum") && (
-              <>
-                <MHCard className="p-4">
-                  <p className="text-sm">👥 Safe, moderated community space</p>
-                </MHCard>
-                <MHCard className="p-4">
-                  <p className="text-sm">🛡️ Anonymous posting options</p>
-                </MHCard>
-                <MHCard className="p-4">
-                  <p className="text-sm">💬 Peer support groups and discussions</p>
-                </MHCard>
-              </>
-            )}
-            
-            {title === "Resource Hub" && (
-              <>
-                <MHCard className="p-4">
-                  <p className="text-sm">🎵 Curated wellness music and sounds</p>
-                </MHCard>
-                <MHCard className="p-4">
-                  <p className="text-sm">🎥 Educational videos and content</p>
-                </MHCard>
-                <MHCard className="p-4">
-                  <p className="text-sm">📚 Mental health articles and guides</p>
-                </MHCard>
-              </>
-            )}
+            <div className="space-y-3">
+              <h2 
+                className="text-xl font-semibold" 
+                style={{ color: palette.cardForeground }}
+              >
+                {feature.title}
+              </h2>
+              <p 
+                className="text-base" 
+                style={{ color: palette.mutedForeground }}
+              >
+                {feature.description}
+              </p>
+            </div>
+
+            <div 
+              className="rounded-xl p-4 space-y-2" 
+              style={{ backgroundColor: palette.muted }}
+            >
+              <p 
+                className="text-sm font-medium" 
+                style={{ color: palette.mutedForeground }}
+              >
+                Coming Soon
+              </p>
+              <p 
+                className="text-xs" 
+                style={{ color: palette.mutedForeground }}
+              >
+                We're working hard to bring you this feature. Stay tuned for updates!
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div 
+                className="p-4 rounded-xl border" 
+                style={{ 
+                  backgroundColor: `${palette.primary}05`,
+                  borderColor: `${palette.primary}20`
+                }}
+              >
+                <h4 
+                  className="font-medium mb-2" 
+                  style={{ color: palette.cardForeground }}
+                >
+                  What to expect:
+                </h4>
+                <ul 
+                  className="text-sm space-y-1 text-left" 
+                  style={{ color: palette.mutedForeground }}
+                >
+                  {getFeatureDetails(feature.id).map((detail, index) => (
+                    <li key={index}>• {detail}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <Button
+                onClick={onBack}
+                className="rounded-xl px-6 py-2 w-full"
+                style={{ 
+                  backgroundColor: palette.primary,
+                  color: palette.primaryForeground 
+                }}
+              >
+                Back to Dashboard
+              </Button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
+// Helper function to get feature-specific details
+const getFeatureDetails = (featureId: string): string[] => {
+  const details: Record<string, string[]> = {
+    'ai-chatbot': [
+      'Personalized conversations based on your mood',
+      'Support in multiple languages',
+      'Available 24/7 for immediate assistance',
+      'Evidence-based therapeutic techniques'
+    ],
+    'self-assessment': [
+      'Professional-grade mental health screenings',
+      'Track your progress over time',
+      'Personalized insights and recommendations',
+      'Privacy-focused and secure data handling'
+    ],
+    'daily-journaling': [
+      'Guided prompts for self-reflection',
+      'Mood tracking integration',
+      'Private and encrypted entries',
+      'Export options for sharing with professionals'
+    ],
+    'peer-support': [
+      'Connect with verified student peers',
+      'Moderated support groups',
+      'Anonymous sharing options',
+      'Community guidelines for safe spaces'
+    ],
+    'resource-hub': [
+      'Curated mental health resources',
+      'Meditation and mindfulness content',
+      'Educational materials about mental wellness',
+      'Local support services directory'
+    ]
+  };
+
+  return details[featureId] || ['Enhanced functionality coming soon', 'Improved user experience', 'Better integration with existing features'];
+};
+
+export default ComingSoonView;
