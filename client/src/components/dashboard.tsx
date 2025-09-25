@@ -19,21 +19,12 @@ const Dashboard: React.FC<DashboardProps> = ({
       {/* Header */}
       <header className="px-4 py-6 max-w-md mx-auto">
         <div className="text-center space-y-3">
-          <div className="flex items-center justify-center space-x-3">
-            <span className="text-3xl">{moodGreeting.icon}</span>
             <h1 
-              className="text-3xl sm:text-4xl font-semibold" 
+              className="text-2xl text-left sm:text-4xl font-sour-gummy font-bold" 
               style={{ color: palette.foreground }}
             >
-              ZenU
+              Welcome back
             </h1>
-          </div>
-          <p 
-            className="text-base sm:text-lg" 
-            style={{ color: palette.mutedForeground }}
-          >
-            {moodGreeting.text}
-          </p>
         </div>
       </header>
 
