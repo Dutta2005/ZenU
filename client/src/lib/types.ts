@@ -97,7 +97,7 @@ export interface MoodCheckInModalProps {
 export interface DashboardProps {
   userMood: number;
   palette: MoodPalette;
-  moodGreeting: MoodGreeting;
+  moodGreeting: MoodGreeting | string;
   suggestedActions: string[];
   features: Feature[];
   onFeatureClick: (featureId: string) => void;

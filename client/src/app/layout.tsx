@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Sour_Gummy, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import FloatingBottomNavbar from "@/components/FloatingBottomNavbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,7 +46,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <main className="pb-20">{children}</main>
+          <FloatingBottomNavbar />
         </ThemeProvider>
       </body>
     </html>

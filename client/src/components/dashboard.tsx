@@ -1,8 +1,7 @@
-import React from 'react';
-import { Button } from "@/components/ui/button";
-import { Sparkles, Heart } from "lucide-react";
-import { FeatureCard, CrisisCard } from './Card';
-import type { DashboardProps } from '@/lib/types';
+import React from "react";
+import { FeatureCard } from "./Card";
+import type { DashboardProps } from "@/lib/types";
+import { User } from "lucide-react";
 
 const Dashboard: React.FC<DashboardProps> = ({
   userMood,
@@ -12,73 +11,34 @@ const Dashboard: React.FC<DashboardProps> = ({
   features,
   onFeatureClick,
   onCrisisClick,
-  onMoodCheckIn
+  onMoodCheckIn,
 }) => {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: palette.background }}>
+    <div className="min-h-screen">
       {/* Header */}
-      <header className="px-4 py-6 max-w-md mx-auto">
-        <div className="text-center space-y-3">
-            <h1
-              className="text-2xl text-left sm:text-4xl font-sour-gummy font-bold"
-              style={{ color: palette.foreground }}
-            >
-              Welcome back
-            </h1>
+      <header className="px-4 py-4 max-w-md mx-auto flex items-center justify-between">
+        <div className="text-left">
+          <h1
+            className="text-2xl sm:text-4xl font-sour-gummy font-bold"
+            style={{ color: palette.foreground }}
+          >
+            Welcome back,
+          </h1>
+          <p 
+          className="text-xl sm:text-2xl font-semibold font-sour-gummy"
+            style={{ color: palette.foreground }}
+           >Rose!</p>
+        </div>
+        <div className="p-2 rounded-full bg-white/10" style={{ boxShadow: `0 4px 16px ${palette.primary}20`, border: `1px solid ${palette.primary}` }}>
+          <User className="w-5 h-5" style={{ color: palette.primary }} />
         </div>
       </header>
 
-      {/* Crisis Support for low moods */}
-      {userMood <= 2 && (
-        <section className="px-4 pb-6 max-w-md mx-auto">
-          <CrisisCard onEmergencyClick={onCrisisClick} />
-        </section>
-      )}
-
-      {/* Suggested Features */}
-      <section className="px-4 pb-6 max-w-md mx-auto">
+      <section
+        className="px-4 pt-8 max-w-md mx-auto rounded-tl-4xl rounded-tr-4xl"
+        style={{ backgroundColor: palette.background }}
+      >
         <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <Sparkles className="h-5 w-5" style={{ color: palette.primary }} />
-            <h2 
-              className="text-xl font-medium" 
-              style={{ color: palette.foreground }}
-            >
-              Suggested for you
-            </h2>
-          </div>
-          <div className="space-y-3">
-            {features
-              .filter(feature => suggestedActions.includes(feature.title))
-              .slice(0, 2)
-              .map((feature) => (
-                <FeatureCard
-                  key={feature.id}
-                  icon={feature.icon}
-                  title={feature.title}
-                  description={feature.description}
-                  status={feature.status}
-                  onClick={() => onFeatureClick(feature.id)}
-                  className="transition-all duration-200"
-                  palette={palette}
-                />
-              ))}
-          </div>
-        </div>
-      </section>
-
-      {/* All Features */}
-      <section className="px-4 pb-8 max-w-md mx-auto">
-        <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <Heart className="h-5 w-5" style={{ color: palette.primary }} />
-            <h2 
-              className="text-xl font-medium" 
-              style={{ color: palette.foreground }}
-            >
-              All Features
-            </h2>
-          </div>
           <div className="space-y-3">
             {features.map((feature) => (
               <FeatureCard
@@ -97,35 +57,23 @@ const Dashboard: React.FC<DashboardProps> = ({
       </section>
 
       {/* Support message */}
-      <footer className="px-4 pb-8 max-w-md mx-auto">
-        <div 
+      <footer
+        className="px-4 py-8 max-w-md mx-auto"
+        style={{ backgroundColor: palette.background }}
+      >
+        <div
           className="text-center p-4 sm:p-6 rounded-2xl"
           style={{ backgroundColor: `${palette.muted}50` }}
         >
-          <p 
-            className="text-sm leading-relaxed" 
+          <p
+            className="text-sm leading-relaxed"
             style={{ color: palette.mutedForeground }}
           >
-            Remember: You are not alone in this journey. Every step forward, no matter how small, is progress.
+            Remember: You are not alone in this journey. Every step forward, no
+            matter how small, is progress.
           </p>
         </div>
       </footer>
-
-      {/* Floating mood check-in button */}
-      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6">
-        <Button
-          onClick={onMoodCheckIn}
-          className="rounded-full w-14 h-14 sm:w-12 sm:h-12 shadow-lg text-xl transition-all duration-300 hover:scale-110"
-          size="icon"
-          style={{ 
-            backgroundColor: `${palette.primary}20`,
-            color: palette.primary,
-            border: `2px solid ${palette.primary}40`
-          }}
-        >
-          😊
-        </Button>
-      </div>
     </div>
   );
 };

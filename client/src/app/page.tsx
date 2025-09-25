@@ -1,154 +1,127 @@
-'use client';
+"use client"
 
-import React from 'react';
-import { useRouter } from 'next/navigation'; // Add this import
-import MoodCheckInModal from '@/components/mood-check-in';
-import Dashboard from '@/components/dashboard';
-import ComingSoonView from '@/components/coming-soon';
-import DynamicStyles from '@/components/DynamicStyle';
-import { 
-  moodPalettes, 
-  dailyTips, 
-  features, 
-  moodGreetings, 
-  actionsByMood 
-} from '@/lib/constants';
-import type { 
-  ViewType, 
-  Feature, 
-  MoodGreeting, 
-  DailyTip 
-} from '@/lib/types';
+import * as React from "react"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
+import { useTheme } from "next-themes"
+import Dashboard from "@/components/dashboard"
+import MoodCheckInModal from "@/components/mood-check-in"
+import { moodPalettes, features, dailyTips } from '@/lib/constants'
 
-// Main App Component
-const ZenUApp: React.FC = () => {
-  const router = useRouter(); // Add router hook
-  const [showMoodCheckIn, setShowMoodCheckIn] = React.useState<boolean>(true);
-  const [userMood, setUserMood] = React.useState<number>(3);
-  const [currentTheme, setCurrentTheme] = React.useState<string>("okay");
-  const [currentView, setCurrentView] = React.useState<ViewType>("dashboard");
-  const [selectedFeature, setSelectedFeature] = React.useState<Feature | null>(null);
+const moodToThemeMap = {
+  0: "sad",        // Very sad
+  1: "sad",        // Sad  
+  2: "anxious",    // Anxious
+  3: "calm",       // Okay
+  4: "happy",      // Good
+  5: "energetic"   // Great
+}
 
-  // Load saved mood from localStorage on component mount
-  React.useEffect(() => {
-    const savedMood = localStorage.getItem('userMood');
-    if (savedMood) {
-      const moodValue = parseInt(savedMood);
-      setUserMood(moodValue);
-      // Also set the corresponding theme
-      const moodThemes = ["very-sad", "sad", "okay", "good", "great"];
-      setCurrentTheme(moodThemes[moodValue] || 'okay');
-    }
-  }, []);
+const moodGreetings = {
+  0: "I see you're having a tough time",
+  1: "Things feel difficult right now",
+  2: "You seem a bit anxious today",
+  3: "You're doing okay today",
+  4: "You're feeling good today",
+  5: "You're having an amazing day!"
+}
 
-  const currentPalette = moodPalettes[userMood];
+const suggestedActionsByMood = {
+  0: ["Crisis Support", "Breathing Exercise"],
+  1: ["Mood Tracker", "Self-Care"],
+  2: ["Breathing Exercise", "Meditation"],
+  3: ["Mood Tracker", "Journal"],
+  4: ["Journal", "Gratitude"],
+  5: ["Gratitude", "Goal Setting"]
+}
+
+export default function Home() {
+  const router = useRouter()
+  const { setTheme } = useTheme()
+  const [showMoodCheckIn, setShowMoodCheckIn] = React.useState(true)
+  const [userMood, setUserMood] = React.useState<number>(3)
+  const [currentThemeKey, setCurrentThemeKey] = React.useState<string>("calm")
   
-  // Get today's tip
-  const todaysTip: DailyTip = React.useMemo(() => {
-    const today = new Date().getDate();
-    return dailyTips[today % dailyTips.length];
-  }, []);
-
-  const moodGreeting: MoodGreeting = React.useMemo(() => {
-    return moodGreetings[userMood] || moodGreetings[3];
-  }, [userMood]);
-
-  const suggestedActions: string[] = React.useMemo(() => {
-    return actionsByMood[userMood] || actionsByMood[3];
-  }, [userMood]);
-
-  const handleMoodChange = (newMood: number, theme: string): void => {
-    setUserMood(newMood);
-    setCurrentTheme(theme);
-    // Save to localStorage when mood changes
-    localStorage.setItem('userMood', newMood.toString());
-  };
-
-  const handleMoodCheckInComplete = (mood: number, theme: string): void => {
-    setUserMood(mood);
-    setCurrentTheme(theme);
-    setShowMoodCheckIn(false);
-    // Save to localStorage when mood check-in is completed
-    localStorage.setItem('userMood', mood.toString());
-  };
-
-  const handleMoodCheckInSkip = (): void => {
-    setShowMoodCheckIn(false);
-    setCurrentTheme("okay");
-  };
-
-  const handleFeatureClick = (featureId: string): void => {
-    if (featureId === "crisis-support") {
-      // Redirect to dedicated crisis support page
-      router.push('/crisis-support');
-    } else {
-      const feature = features.find(f => f.id === featureId);
-      if (feature) {
-        setSelectedFeature(feature);
-        setCurrentView("coming-soon");
+  // Check if user has already done check-in today
+  React.useEffect(() => {
+    const today = new Date().toDateString()
+    const lastCheckIn = localStorage.getItem("lastMoodCheckIn")
+    
+    if (lastCheckIn === today) {
+      const savedMood = localStorage.getItem("currentMood")
+      const savedTheme = localStorage.getItem("currentTheme")
+      
+      if (savedMood && savedTheme) {
+        const moodValue = parseInt(savedMood)
+        setUserMood(moodValue)
+        setCurrentThemeKey(savedTheme)
+        setTheme(savedTheme)
+        setShowMoodCheckIn(false)
       }
     }
-  };
+  }, [setTheme])
 
-  const handleCrisisClick = (): void => {
-    // Redirect to dedicated crisis support page
-    router.push('/crisis-support');
-  };
+  const handleMoodCheckInComplete = (mood: number, themeKey: string) => {
+    setUserMood(mood)
+    
+    // Map mood to theme
+    const theme = moodToThemeMap[mood as keyof typeof moodToThemeMap] || "calm"
+    setCurrentThemeKey(theme)
+    setTheme(theme)
+    setShowMoodCheckIn(false)
+    
+    // Save to localStorage
+    const today = new Date().toDateString()
+    localStorage.setItem("lastMoodCheckIn", today)
+    localStorage.setItem("currentMood", mood.toString())
+    localStorage.setItem("currentTheme", theme)
+  }
 
-  const handleBackToDashboard = (): void => {
-    setCurrentView("dashboard");
-    setSelectedFeature(null);
-  };
+  const handleMoodCheckInSkip = () => {
+    setShowMoodCheckIn(false)
+    setTheme("calm")
+  }
 
-  const handleOpenMoodCheckIn = (): void => {
-    setShowMoodCheckIn(true);
-  };
+  const handleFeatureClick = (featureId: string) => {
+    router.push(`/${featureId}`)
+  }
 
-  // Apply dynamic styles
-  const dynamicStyles: React.CSSProperties = {
-    '--primary': currentPalette.primary,
-    '--primary-foreground': currentPalette.primaryForeground,
-    '--background': currentPalette.background,
-    '--foreground': currentPalette.foreground,
-    '--card': currentPalette.card,
-    '--card-foreground': currentPalette.cardForeground,
-    '--muted': currentPalette.muted,
-    '--muted-foreground': currentPalette.mutedForeground,
-    '--accent': currentPalette.accent,
-    '--accent-foreground': currentPalette.accentForeground,
-    '--border': currentPalette.border,
-    '--ring': currentPalette.ring,
-    background: currentPalette.gradient
-  } as React.CSSProperties;
+  const handleCrisisClick = () => {
+    router.push("/crisis-support")
+  }
+
+  const handleMoodCheckInOpen = () => {
+    setShowMoodCheckIn(true)
+  }
+
+  // Get current palette
+  const currentPalette = moodPalettes[userMood] || moodPalettes[3]
+  
+  // Get today's tip
+  const todaysTip = dailyTips[Math.floor(Math.random() * dailyTips.length)]
+  
+  // Get suggested actions for current mood
+  const suggestedActions = suggestedActionsByMood[userMood as keyof typeof suggestedActionsByMood] || []
+  
+  // Get mood greeting
+  const moodGreeting = moodGreetings[userMood as keyof typeof moodGreetings] || moodGreetings[3]
 
   return (
-    <div className="min-h-screen fade-in" style={dynamicStyles}>
-      <DynamicStyles palette={currentPalette} />
-      
-      {/* Mood Check-in Modal */}
+    <>
       <MoodCheckInModal
         isOpen={showMoodCheckIn}
         userMood={userMood}
         palette={currentPalette}
         todaysTip={todaysTip}
-        onMoodChange={handleMoodChange}
+        onMoodChange={(mood: number, theme: string) => {
+          setUserMood(mood)
+          setCurrentThemeKey(theme)
+        }}
         onComplete={handleMoodCheckInComplete}
         onSkip={handleMoodCheckInSkip}
       />
-
-      {/* Removed Crisis View - now redirects to dedicated page */}
-
-      {/* Coming Soon View */}
-      {currentView === "coming-soon" && selectedFeature && (
-        <ComingSoonView
-          feature={selectedFeature}
-          palette={currentPalette}
-          onBack={handleBackToDashboard}
-        />
-      )}
-
-      {/* Dashboard */}
-      {currentView === "dashboard" && !showMoodCheckIn && (
+      
+      {!showMoodCheckIn && (
         <Dashboard
           userMood={userMood}
           palette={currentPalette}
@@ -157,11 +130,9 @@ const ZenUApp: React.FC = () => {
           features={features}
           onFeatureClick={handleFeatureClick}
           onCrisisClick={handleCrisisClick}
-          onMoodCheckIn={handleOpenMoodCheckIn}
+          onMoodCheckIn={handleMoodCheckInOpen}
         />
       )}
-    </div>
-  );
-};
-
-export default ZenUApp;
+    </>
+  )
+}
