@@ -7,6 +7,7 @@ import { useTheme } from "next-themes"
 import Dashboard from "@/components/dashboard"
 import MoodCheckInModal from "@/components/mood-check-in"
 import { moodPalettes, features, dailyTips } from '@/lib/constants'
+import { useModal } from '@/context/ModalContext'
 
 const moodToThemeMap = {
   0: "sad",        // Very sad
@@ -38,7 +39,7 @@ const suggestedActionsByMood = {
 export default function Home() {
   const router = useRouter()
   const { setTheme } = useTheme()
-  const [showMoodCheckIn, setShowMoodCheckIn] = React.useState(true)
+  const { isMoodCheckInOpen, setIsMoodCheckInOpen } = useModal()
   const [userMood, setUserMood] = React.useState<number>(3)
   const [currentThemeKey, setCurrentThemeKey] = React.useState<string>("calm")
   
@@ -48,7 +49,7 @@ export default function Home() {
     const lastCheckIn = localStorage.getItem("lastMoodCheckIn")
     
     if (lastCheckIn === today) {
-      const savedMood = localStorage.getItem("currentMood")
+      const savedMood = localStorage.getItem("userMood")
       const savedTheme = localStorage.getItem("currentTheme")
       
       if (savedMood && savedTheme) {
@@ -56,10 +57,12 @@ export default function Home() {
         setUserMood(moodValue)
         setCurrentThemeKey(savedTheme)
         setTheme(savedTheme)
-        setShowMoodCheckIn(false)
+        setIsMoodCheckInOpen(false)
       }
+    } else {
+      setIsMoodCheckInOpen(true)
     }
-  }, [setTheme])
+  }, [setTheme, setIsMoodCheckInOpen])
 
   const handleMoodCheckInComplete = (mood: number, themeKey: string) => {
     setUserMood(mood)
@@ -68,17 +71,17 @@ export default function Home() {
     const theme = moodToThemeMap[mood as keyof typeof moodToThemeMap] || "calm"
     setCurrentThemeKey(theme)
     setTheme(theme)
-    setShowMoodCheckIn(false)
+    setIsMoodCheckInOpen(false)
     
     // Save to localStorage
     const today = new Date().toDateString()
     localStorage.setItem("lastMoodCheckIn", today)
-    localStorage.setItem("currentMood", mood.toString())
+    localStorage.setItem("userMood", mood.toString())
     localStorage.setItem("currentTheme", theme)
   }
 
   const handleMoodCheckInSkip = () => {
-    setShowMoodCheckIn(false)
+    setIsMoodCheckInOpen(false)
     setTheme("calm")
   }
 
@@ -91,7 +94,7 @@ export default function Home() {
   }
 
   const handleMoodCheckInOpen = () => {
-    setShowMoodCheckIn(true)
+    setIsMoodCheckInOpen(true)
   }
 
   // Get current palette
@@ -109,7 +112,7 @@ export default function Home() {
   return (
     <>
       <MoodCheckInModal
-        isOpen={showMoodCheckIn}
+        isOpen={isMoodCheckInOpen}
         userMood={userMood}
         palette={currentPalette}
         todaysTip={todaysTip}
@@ -121,7 +124,7 @@ export default function Home() {
         onSkip={handleMoodCheckInSkip}
       />
       
-      {!showMoodCheckIn && (
+      {!isMoodCheckInOpen && (
         <Dashboard
           userMood={userMood}
           palette={currentPalette}

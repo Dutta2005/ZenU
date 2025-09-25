@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Bot, BookOpen, AlertTriangle, Users, Settings, Globe } from 'lucide-react'
 import { moodPalettes } from '@/lib/constants'
+import { useModal } from '@/context/ModalContext'
 
 interface MoodPalette {
   name: string;
@@ -27,16 +28,22 @@ interface MoodPalette {
 
 function FloatingBottomNavbar() {
   const router = useRouter()
+  const { isMoodCheckInOpen } = useModal()
   const [userMood, setUserMood] = useState<number>(3)
   const [activeTab, setActiveTab] = useState<string>('home')
   
   // Get mood from localStorage
   useEffect(() => {
-    const savedMood = localStorage.getItem("currentMood")
+    const savedMood = localStorage.getItem("userMood")
     if (savedMood) {
       setUserMood(parseInt(savedMood))
     }
   }, [])
+
+  // Don't render if mood check-in modal is open
+  if (isMoodCheckInOpen) {
+    return null
+  }
 
   // Get current palette based on mood
   const currentPalette: MoodPalette = moodPalettes[userMood] || moodPalettes[3]

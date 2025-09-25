@@ -1,3 +1,4 @@
+//components/mood-check-in.tsx
 import React from 'react';
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,7 @@ import EmojiSlider from './EmojiSlider';
 import { TipCard } from './Card';
 import { moodPalettes } from '@/lib/constants';
 import type { MoodCheckInModalProps } from '@/lib/types';
+import DynamicStyles from './DynamicStyle';
 
 const MoodCheckInModal: React.FC<MoodCheckInModalProps> = ({
   isOpen,
@@ -27,11 +29,20 @@ const MoodCheckInModal: React.FC<MoodCheckInModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
     <DialogTitle className="sr-only">Mood Check-In</DialogTitle>
+     {/*if modal is open then update the background otherwise not*/}
+     {isOpen && (
+       <div
+          className="fixed inset-0 z-50"
+          style={{
+            background: `linear-gradient(135deg,  ${currentPalette.primary}, ${currentPalette.primary}, ${currentPalette.background})`
+          }}
+          />
+     )}
       <DialogContent className="w-[95vw] max-w-lg mx-auto p-0 gap-0 border-0 bg-transparent shadow-none max-h-[95vh] overflow-y-auto">
         <div 
           className="backdrop-blur-lg rounded-3xl border shadow-2xl overflow-hidden"
           style={{ 
-            backgroundColor: `${currentPalette.card}95`,
+            backgroundColor: `${currentPalette.card}`,
             borderColor: `${currentPalette.border}50` 
           }}
         >

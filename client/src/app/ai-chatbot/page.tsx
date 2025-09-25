@@ -13,7 +13,7 @@ export default function AIChatbotPage() {
 
   // Get mood from localStorage
   useEffect(() => {
-    const savedMood = localStorage.getItem("currentMood")
+    const savedMood = localStorage.getItem("userMood")
     if (savedMood) {
       setUserMood(parseInt(savedMood))
     }
