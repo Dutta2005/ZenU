@@ -39,7 +39,8 @@ const Dashboard: React.FC<DashboardProps> = ({
         style={{ backgroundColor: palette.background }}
       >
         <div className="space-y-4">
-          <div className="space-y-3">
+          {/* Two column grid for feature cards */}
+          <div className="grid grid-cols-2 gap-3">
             {features.map((feature) => (
               <FeatureCard
                 key={feature.id}
