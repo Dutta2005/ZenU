@@ -47,7 +47,7 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
     <button
       onClick={onClick}
       disabled={!isAvailable}
-      className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 hover:shadow-lg ${
+      className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 hover:shadow-lg relative overflow-hidden ${
         isAvailable ? 'hover:scale-[1.02] cursor-pointer' : 'cursor-not-allowed opacity-70'
       } ${className}`}
       style={{ 
@@ -55,29 +55,44 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
         borderColor: palette.border
       }}
     >
-      <div className="flex items-start space-x-4">
+      {/* Background logo */}
+      <div 
+        className="absolute top-2 right-2 opacity-10 pointer-events-none"
+        style={{ color: palette.primary }}
+      >
+        <div className="w-8 h-8 flex items-center justify-center">
+          {icon}
+        </div>
+      </div>
+
+      <div className="space-y-3 relative z-10">
+        {/* Main icon */}
         <div 
-          className={`p-3 rounded-xl ${isAvailable ? 'bg-opacity-20' : 'bg-gray-100'}`}
+          className={`p-2 rounded-lg w-fit ${isAvailable ? 'bg-opacity-20' : 'bg-gray-100'}`}
           style={{ 
             backgroundColor: isAvailable ? `${palette.primary}20` : '#f3f4f6',
             color: isAvailable ? palette.primary : '#6b7280'
           }}
         >
-          {icon}
+          <div className="w-5 h-5 flex items-center justify-center">
+            {icon}
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center space-x-2">
-            <h3 className="font-medium text-base" style={{ color: palette.cardForeground }}>
+        
+        {/* Content */}
+        <div className="space-y-1">
+          <div className="flex items-center justify-between">
+            <h3 className="font-medium text-sm leading-tight" style={{ color: palette.cardForeground }}>
               {title}
             </h3>
             {!isAvailable && (
-              <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">
+              <span className="text-xs px-1.5 py-0.5 rounded-full bg-yellow-100 text-yellow-800">
                 Soon
               </span>
             )}
           </div>
           <p 
-            className="text-sm opacity-70 mt-1 leading-relaxed"
+            className="text-xs opacity-70 leading-relaxed line-clamp-3"
             style={{ color: palette.mutedForeground }}
           >
             {description}
