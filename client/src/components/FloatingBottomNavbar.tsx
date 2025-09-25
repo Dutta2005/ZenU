@@ -45,18 +45,18 @@ function FloatingBottomNavbar() {
     {
       id: 'ai-chat',
       icon: Bot,
-      path: '/ai-chat'
+      path: '/ai-chatbot'
     },
     {
       id: 'journal',
       icon: BookOpen,
-      path: '/journal'
+      path: '/daily-journaling'
     },
     // SOS button will be handled separately
     {
       id: 'community',
       icon: Globe,
-      path: '/community'
+      path: '/peer-support'
     },
     {
       id: 'settings',

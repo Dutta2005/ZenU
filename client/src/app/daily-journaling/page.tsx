@@ -313,17 +313,17 @@ const DailyJournalingPage: React.FC = () => {
           <h1 className="text-3xl font-bold text-foreground">Daily Journal</h1>
           <p className="text-muted-foreground">Capture your thoughts and reflections</p>
         </div>
-        <button
+        {/* <button
           onClick={handleCreateNew}
           className="flex items-center space-x-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity"
         >
           <Plus className="w-4 h-4" />
           <span>New Entry</span>
-        </button>
+        </button> */}
       </div>
 
       {/* Search and Filter */}
-      <div className="bg-card rounded-lg p-4 space-y-4">
+      {/* <div className="bg-card rounded-lg p-4 space-y-4">
         <div className="flex space-x-4">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -349,7 +349,7 @@ const DailyJournalingPage: React.FC = () => {
             <option value="sad">Sad</option>
           </select>
         </div>
-      </div>
+      </div> */}
 
       {/* Journal Entries */}
       <div className="space-y-4">
@@ -405,7 +405,7 @@ const DailyJournalingPage: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex space-x-2 ml-4">
+                {/* <div className="flex space-x-2 ml-4">
                   <button
                     onClick={() => handleEdit(journal)}
                     className="p-2 text-muted-foreground hover:text-primary hover:bg-muted rounded-lg transition-colors"
@@ -418,7 +418,7 @@ const DailyJournalingPage: React.FC = () => {
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           ))
