@@ -168,14 +168,14 @@ export const features: Feature[] = [
     icon: <ClipboardList className="h-5 w-5" />,
     title: "Self-Assessment",
     description: "Understand your mental health with clinical tools",
-    status: "coming-soon"
+    status: "available"
   },
   {
     id: "daily-journaling",
     icon: <BookOpen className="h-5 w-5" />,
     title: "Daily Journaling",
     description: "Private space for thoughts and reflection",
-    status: "coming-soon"
+    status: "available"
   },
   {
     id: "crisis-support",
@@ -189,7 +189,7 @@ export const features: Feature[] = [
     icon: <Users className="h-5 w-5" />,
     title: "Peer Support",
     description: "Connect safely with other students",
-    status: "coming-soon"
+    status: "available"
   },
   {
     id: "resource-hub",

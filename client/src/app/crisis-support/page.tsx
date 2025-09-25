@@ -129,8 +129,8 @@ export default function CrisisSupport() {
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-headline text-primary">Crisis Support</h1>
-          <p className="text-caption">Immediate help is available</p>
+          <h1 className="text-headline text-primary font-semibold">Crisis Support</h1>
+          <p className="text-caption text-primary">Immediate help is available</p>
         </div>
       </header>
 
