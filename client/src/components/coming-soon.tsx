@@ -135,12 +135,6 @@ const getFeatureDetails = (featureId: string): string[] => {
       'Available 24/7 for immediate assistance',
       'Evidence-based therapeutic techniques'
     ],
-    'self-assessment': [
-      'Professional-grade mental health screenings',
-      'Track your progress over time',
-      'Personalized insights and recommendations',
-      'Privacy-focused and secure data handling'
-    ],
     'daily-journaling': [
       'Guided prompts for self-reflection',
       'Mood tracking integration',

@@ -81,6 +81,12 @@ const ZenUApp: React.FC = () => {
     if (featureId === "crisis-support") {
       // Redirect to dedicated crisis support page
       router.push('/crisis-support');
+    } else if (featureId === "self-assessment") {
+      router.push('/self-assessment');
+    } else if (featureId === "daily-journaling") {
+      router.push('/daily-journaling');
+    } else if (featureId === "peer-support") {
+      router.push('/peer-support');
     } else {
       const feature = features.find(f => f.id === featureId);
       if (feature) {
@@ -95,6 +101,7 @@ const ZenUApp: React.FC = () => {
     router.push('/crisis-support');
   };
 
+ 
   const handleBackToDashboard = (): void => {
     setCurrentView("dashboard");
     setSelectedFeature(null);

@@ -34,6 +34,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           <CrisisCard onEmergencyClick={onCrisisClick} />
         </section>
       )}
+      
 
       {/* Suggested Features */}
       <section className="px-4 pb-6 max-w-md mx-auto">
