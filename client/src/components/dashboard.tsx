@@ -19,8 +19,8 @@ const Dashboard: React.FC<DashboardProps> = ({
       {/* Header */}
       <header className="px-4 py-6 max-w-md mx-auto">
         <div className="text-center space-y-3">
-            <h1 
-              className="text-2xl text-left sm:text-4xl font-sour-gummy font-bold" 
+            <h1
+              className="text-2xl text-left sm:text-4xl font-sour-gummy font-bold"
               style={{ color: palette.foreground }}
             >
               Welcome back
