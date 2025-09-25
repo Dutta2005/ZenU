@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation'; // Add this import
 import MoodCheckInModal from '@/components/mood-check-in';
 import Dashboard from '@/components/dashboard';
-import CrisisView from '@/components/CrisisView';
 import ComingSoonView from '@/components/coming-soon';
 import DynamicStyles from '@/components/DynamicStyle';
 import { 
@@ -22,11 +22,24 @@ import type {
 
 // Main App Component
 const ZenUApp: React.FC = () => {
+  const router = useRouter(); // Add router hook
   const [showMoodCheckIn, setShowMoodCheckIn] = React.useState<boolean>(true);
   const [userMood, setUserMood] = React.useState<number>(3);
   const [currentTheme, setCurrentTheme] = React.useState<string>("okay");
   const [currentView, setCurrentView] = React.useState<ViewType>("dashboard");
   const [selectedFeature, setSelectedFeature] = React.useState<Feature | null>(null);
+
+  // Load saved mood from localStorage on component mount
+  React.useEffect(() => {
+    const savedMood = localStorage.getItem('userMood');
+    if (savedMood) {
+      const moodValue = parseInt(savedMood);
+      setUserMood(moodValue);
+      // Also set the corresponding theme
+      const moodThemes = ["very-sad", "sad", "okay", "good", "great"];
+      setCurrentTheme(moodThemes[moodValue] || 'okay');
+    }
+  }, []);
 
   const currentPalette = moodPalettes[userMood];
   
@@ -47,12 +60,16 @@ const ZenUApp: React.FC = () => {
   const handleMoodChange = (newMood: number, theme: string): void => {
     setUserMood(newMood);
     setCurrentTheme(theme);
+    // Save to localStorage when mood changes
+    localStorage.setItem('userMood', newMood.toString());
   };
 
   const handleMoodCheckInComplete = (mood: number, theme: string): void => {
     setUserMood(mood);
     setCurrentTheme(theme);
     setShowMoodCheckIn(false);
+    // Save to localStorage when mood check-in is completed
+    localStorage.setItem('userMood', mood.toString());
   };
 
   const handleMoodCheckInSkip = (): void => {
@@ -62,7 +79,8 @@ const ZenUApp: React.FC = () => {
 
   const handleFeatureClick = (featureId: string): void => {
     if (featureId === "crisis-support") {
-      setCurrentView("crisis");
+      // Redirect to dedicated crisis support page
+      router.push('/crisis-support');
     } else {
       const feature = features.find(f => f.id === featureId);
       if (feature) {
@@ -73,7 +91,8 @@ const ZenUApp: React.FC = () => {
   };
 
   const handleCrisisClick = (): void => {
-    setCurrentView("crisis");
+    // Redirect to dedicated crisis support page
+    router.push('/crisis-support');
   };
 
   const handleBackToDashboard = (): void => {
@@ -117,13 +136,7 @@ const ZenUApp: React.FC = () => {
         onSkip={handleMoodCheckInSkip}
       />
 
-      {/* Crisis View */}
-      {currentView === "crisis" && (
-        <CrisisView
-          palette={currentPalette}
-          onBack={handleBackToDashboard}
-        />
-      )}
+      {/* Removed Crisis View - now redirects to dedicated page */}
 
       {/* Coming Soon View */}
       {currentView === "coming-soon" && selectedFeature && (

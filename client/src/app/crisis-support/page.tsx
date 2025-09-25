@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { MHCard } from "@/components/ui/mh-card"
 import { Phone, MessageSquare, ArrowLeft, Heart, Clock } from "lucide-react"
 import { useRouter } from "next/navigation"
+import DynamicStyles from '@/components/DynamicStyle'
+import { moodPalettes } from '@/lib/constants'
 
 const emergencyContacts = [
   {
@@ -56,6 +58,19 @@ const quickActions = [
 
 export default function CrisisSupport() {
   const router = useRouter()
+  
+  // Get user's current mood from localStorage or default to neutral
+  const [userMood, setUserMood] = React.useState<number>(3)
+  
+  React.useEffect(() => {
+    // Try to get the user's current mood from localStorage
+    const savedMood = localStorage.getItem('userMood')
+    if (savedMood) {
+      setUserMood(parseInt(savedMood))
+    }
+  }, [])
+
+  const currentPalette = moodPalettes[userMood]
 
   const handleEmergencyCall = (number: string) => {
     window.location.href = `tel:${number.replace(/\D/g, '')}`
@@ -82,20 +97,39 @@ export default function CrisisSupport() {
     }
   }
 
+  // Apply dynamic styles
+  const dynamicStyles: React.CSSProperties = {
+    '--primary': currentPalette.primary,
+    '--primary-foreground': currentPalette.primaryForeground,
+    '--background': currentPalette.background,
+    '--foreground': currentPalette.foreground,
+    '--card': currentPalette.card,
+    '--card-foreground': currentPalette.cardForeground,
+    '--muted': currentPalette.muted,
+    '--muted-foreground': currentPalette.mutedForeground,
+    '--accent': currentPalette.accent,
+    '--accent-foreground': currentPalette.accentForeground,
+    '--border': currentPalette.border,
+    '--ring': currentPalette.ring,
+    background: currentPalette.gradient
+  } as React.CSSProperties
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen fade-in" style={dynamicStyles}>
+      <DynamicStyles palette={currentPalette} />
+      
       {/* Header */}
       <header className="content-safe py-4 flex items-center space-x-4">
         <Button
           variant="ghost"
           size="icon"
           onClick={() => router.back()}
-          className="rounded-full"
+          className="rounded-full text-primary"
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-headline">Crisis Support</h1>
+          <h1 className="text-headline text-primary">Crisis Support</h1>
           <p className="text-caption">Immediate help is available</p>
         </div>
       </header>
@@ -124,7 +158,7 @@ export default function CrisisSupport() {
       {/* Quick Actions */}
       <section className="content-safe pb-6">
         <div className="space-y-4">
-          <h2 className="text-headline flex items-center space-x-2">
+          <h2 className="text-headline flex items-center space-x-2 text-primary">
             <Clock className="h-5 w-5 text-primary" />
             <span>How can we help right now?</span>
           </h2>
@@ -161,7 +195,7 @@ export default function CrisisSupport() {
       {/* Emergency Contacts */}
       <section className="content-safe pb-6">
         <div className="space-y-4">
-          <h2 className="text-headline">Emergency Contacts</h2>
+          <h2 className="text-headline text-primary">Emergency Contacts</h2>
           <div className="space-y-3">
             {emergencyContacts.map((contact, index) => (
               <MHCard
