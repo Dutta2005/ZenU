@@ -2,8 +2,10 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import type { ComingSoonViewProps } from '@/lib/types';
+import {useRouter} from 'next/navigation'
 
 const ComingSoonView: React.FC<ComingSoonViewProps> = ({ feature, palette, onBack }) => {
+  const router = useRouter();
   return (
     <div className="min-h-screen" style={{ background: palette.gradient }}>
       <div className="min-h-screen" style={{ backgroundColor: palette.background }}>
@@ -109,7 +111,7 @@ const ComingSoonView: React.FC<ComingSoonViewProps> = ({ feature, palette, onBac
               </div>
 
               <Button
-                onClick={onBack}
+                onClick={() => router.push('/')}
                 className="rounded-xl px-6 py-2 w-full"
                 style={{ 
                   backgroundColor: palette.primary,
