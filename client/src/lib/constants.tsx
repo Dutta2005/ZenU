@@ -196,7 +196,7 @@ export const features: Feature[] = [
     icon: <Music className="h-5 w-5" />,
     title: "Resource Hub",
     description: "Helpful content and wellness resources",
-    status: "coming-soon"
+    status: "available"
   }
 ];
 
