@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Sour_Gummy, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import FloatingBottomNavbar from "@/components/FloatingBottomNavbar";
+import { ModalProvider } from "@/context/ModalContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,8 +47,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="pb-20">{children}</main>
-          <FloatingBottomNavbar />
+          <ModalProvider>
+            <main className="pb-20">{children}</main>
+            <FloatingBottomNavbar />
+          </ModalProvider>
         </ThemeProvider>
       </body>
     </html>

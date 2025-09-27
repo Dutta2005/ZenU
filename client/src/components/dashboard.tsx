@@ -2,6 +2,7 @@ import React from "react";
 import { FeatureCard } from "./Card";
 import type { DashboardProps } from "@/lib/types";
 import { User } from "lucide-react";
+import DynamicStyles from "./DynamicStyle";
 
 const Dashboard: React.FC<DashboardProps> = ({
   userMood,
@@ -33,7 +34,8 @@ const Dashboard: React.FC<DashboardProps> = ({
 
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen fade-in">
+      <DynamicStyles palette={palette} />
       {/* Header */}
       <header className="px-4 py-4 max-w-md mx-auto flex items-center justify-between">
         <div className="text-left">
