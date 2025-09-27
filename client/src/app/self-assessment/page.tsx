@@ -218,8 +218,8 @@ const SelfAssessmentPage: React.FC = () => {
         <div className="flex justify-center">
           <Brain className="w-16 h-16 text-primary" />
         </div>
-        <h1 className="text-3xl font-bold text-foreground">Mental Health Self-Assessment</h1>
-        <p className="text-muted-foreground text-lg">
+        <h1 className="text-3xl font-bold text-foreground">Self-Assessment</h1>
+        <p className="text-muted-foreground text-sm">
           Take a moment to check in with yourself. This assessment uses standardized questionnaires 
           to help you understand your current mental health status.
         </p>
@@ -265,7 +265,7 @@ const SelfAssessmentPage: React.FC = () => {
     const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
 
     return (
-      <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <div className="max-w-2xl mx-auto p-2 space-y-6">
         <div className="flex items-center space-x-4 mb-6">
           {(currentQuestionIndex > 0 || currentStep === 'gad7') && (
             <button
@@ -289,7 +289,7 @@ const SelfAssessmentPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card rounded-lg p-6 space-y-6">
+        <div className="bg-card rounded-lg p-4 space-y-6">
           <h2 className="text-xl font-semibold text-card-foreground">
             Over the last 2 weeks, how often have you been bothered by:
           </h2>
