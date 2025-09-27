@@ -13,6 +13,25 @@ const Dashboard: React.FC<DashboardProps> = ({
   onCrisisClick,
   onMoodCheckIn,
 }) => {
+  // Helper function to check if a feature is suggested based on user mood
+  const isFeatureSuggested = (featureTitle: string) => {
+    return suggestedActions.some(action => 
+      action.toLowerCase().replace(/\s+/g, '-') === featureTitle.toLowerCase().replace(/\s+/g, '-') ||
+      action.toLowerCase() === featureTitle.toLowerCase()
+    );
+  };
+
+  // Sort features to show suggested ones first
+  const sortedFeatures = [...features].sort((a, b) => {
+    const aIsSuggested = isFeatureSuggested(a.title);
+    const bIsSuggested = isFeatureSuggested(b.title);
+    
+    if (aIsSuggested && !bIsSuggested) return -1;
+    if (!aIsSuggested && bIsSuggested) return 1;
+    return 0;
+  });
+
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -25,14 +44,29 @@ const Dashboard: React.FC<DashboardProps> = ({
             Welcome back,
           </h1>
           <p 
-          className="text-xl sm:text-2xl font-semibold font-sour-gummy"
+            className="text-xl sm:text-2xl font-semibold font-sour-gummy"
             style={{ color: palette.foreground }}
-           >Rose!</p>
+          >Rose!</p>
         </div>
         <div className="p-2 rounded-full bg-white/10" style={{ boxShadow: `0 4px 16px ${palette.primary}20`, border: `1px solid ${palette.primary}` }}>
           <User className="w-5 h-5" style={{ color: palette.primary }} />
         </div>
       </header>
+
+      {/* Mood greeting section */}
+      <section className="px-4 pb-4 max-w-md mx-auto">
+        <div
+          className="p-4 rounded-2xl"
+          style={{ backgroundColor: `${palette.primary}10`, borderLeft: `4px solid ${palette.primary}` }}
+        >
+          <p
+            className="text-sm font-medium"
+            style={{ color: palette.foreground }}
+          >
+            {String(moodGreeting)}
+          </p>
+        </div>
+      </section>
 
       <section
         className="px-4 pt-8 max-w-md mx-auto rounded-tl-4xl rounded-tr-4xl"
@@ -41,7 +75,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         <div className="space-y-4">
           {/* Two column grid for feature cards */}
           <div className="grid grid-cols-2 gap-3">
-            {features.map((feature) => (
+            {sortedFeatures.map((feature) => (
               <FeatureCard
                 key={feature.id}
                 icon={feature.icon}
@@ -51,6 +85,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 onClick={() => onFeatureClick(feature.id)}
                 className="transition-all duration-200"
                 palette={palette}
+                isSuggested={isFeatureSuggested(feature.title)}
               />
             ))}
           </div>

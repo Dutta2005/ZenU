@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Phone } from "lucide-react";
+import { Phone, Sparkles } from "lucide-react";
 import type { TipCardProps, FeatureCardProps, CrisisCardProps } from '@/lib/types';
 
 export const TipCard: React.FC<TipCardProps> = ({ tip, category, className = "", palette }) => {
@@ -39,7 +39,8 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
   status, 
   onClick, 
   className = "", 
-  palette 
+  palette,
+  isSuggested = false
 }) => {
   const isAvailable = status === 'available';
   
@@ -51,19 +52,25 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
         isAvailable ? 'hover:scale-[1.02] cursor-pointer' : 'cursor-not-allowed opacity-70'
       } ${className}`}
       style={{ 
-        backgroundColor: palette.card,
-        borderColor: palette.border
+        backgroundColor: isSuggested ? palette.card : palette.card,
+        borderColor: isSuggested ? palette.primary : palette.border,
+        borderWidth: isSuggested ? '2px' : '1px',
+        boxShadow: isSuggested ? `0 4px 12px ${palette.primary}20` : undefined
       }}
     >
-      {/* Background logo */}
-      <div 
-        className="absolute top-2 right-2 opacity-10 pointer-events-none"
-        style={{ color: palette.primary }}
-      >
-        <div className="w-8 h-8 flex items-center justify-center">
-          {icon}
+      {/* Suggested badge */}
+      {isSuggested && (
+        <div 
+          className="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 z-20"
+          style={{ 
+            backgroundColor: palette.primary,
+            color: 'white'
+          }}
+        >
+          <Sparkles className="w-3 h-3" />
+          <p>Suggested</p>
         </div>
-      </div>
+      )}
 
       <div className="space-y-3 relative z-10">
         {/* Main icon */}
@@ -82,7 +89,10 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
         {/* Content */}
         <div className="space-y-1">
           <div className="flex items-center justify-between">
-            <h3 className="font-medium text-sm leading-tight" style={{ color: palette.cardForeground }}>
+            <h3 
+              className="font-medium text-sm leading-tight" 
+              style={{ color: palette.cardForeground }}
+            >
               {title}
             </h3>
             {!isAvailable && (
@@ -99,6 +109,17 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
           </p>
         </div>
       </div>
+
+      {/* Subtle glow effect for suggested cards */}
+      {isSuggested && (
+        <div 
+          className="absolute inset-0 rounded-2xl opacity-20 pointer-events-none"
+          style={{ 
+            boxShadow: `0 0 20px ${palette.primary}40`,
+            background: `linear-gradient(135deg, ${palette.primary}10, transparent)`
+          }}
+        />
+      )}
     </button>
   );
 };

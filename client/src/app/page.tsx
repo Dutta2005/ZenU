@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { useTheme } from "next-themes"
 import Dashboard from "@/components/dashboard"
@@ -27,12 +26,12 @@ const moodGreetings = {
 }
 
 const suggestedActionsByMood = {
-  0: ["Crisis Support", "Breathing Exercise"],
-  1: ["Mood Tracker", "Self-Care"],
-  2: ["Breathing Exercise", "Meditation"],
-  3: ["Mood Tracker", "Journal"],
-  4: ["Journal", "Gratitude"],
-  5: ["Gratitude", "Goal Setting"]
+  0: ["Crisis Support", "Self-Assessment"],        // Very sad - immediate help + understanding mental state
+  1: ["Self-Assessment", "AI Chatbot"],         // Sad - self-reflection and journaling
+  2: ["Self-Assessment", "Resource Hub"],          // Anxious - assessment tools + helpful resources
+  3: ["Daily Journal", "Peer Support"],            // Okay - regular journaling + community connection
+  4: ["Daily Journal", "Peer Support"],            // Good - continue positive practices
+  5: ["Peer Support", "Resource Hub"]              // Great - share positivity + explore resources
 }
 
 export default function Home() {

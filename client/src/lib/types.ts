@@ -67,6 +67,7 @@ export interface FeatureCardProps {
   onClick: () => void;
   className?: string;
   palette: MoodPalette;
+  isSuggested: boolean;
 }
 
 export interface CrisisCardProps {
@@ -97,7 +98,7 @@ export interface MoodCheckInModalProps {
 export interface DashboardProps {
   userMood: number;
   palette: MoodPalette;
-  moodGreeting: MoodGreeting | string;
+  moodGreeting: string;
   suggestedActions: string[];
   features: Feature[];
   onFeatureClick: (featureId: string) => void;
