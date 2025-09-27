@@ -173,7 +173,7 @@ export const features: Feature[] = [
   {
     id: "daily-journaling",
     icon: <BookOpen className="h-5 w-5" />,
-    title: "Daily Journaling",
+    title: "Daily Journal",
     description: "Private space for thoughts and reflection",
     status: "available"
   },

@@ -148,14 +148,14 @@ export default function CrisisSupport() {
               Life-threatening emergency?
             </h2>
             <p className="text-sm text-foreground/80">
-              Call 911 immediately or go to your nearest emergency room
+              Call to iCall immediately or go to your nearest emergency room
             </p>
             <Button
               onClick={() => handleCall("911")}
               className="w-full mh-button-crisis"
             >
               <Phone className="h-4 w-4 mr-2" />
-              Call 911 Now
+              iCall Now
             </Button>
           </div>
         </MHCard>
