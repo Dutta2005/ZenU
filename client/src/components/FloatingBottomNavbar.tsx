@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { Bot, BookOpen, AlertTriangle, Users, Settings, Globe } from 'lucide-react'
 import { moodPalettes } from '@/lib/constants'
 import { useModal } from '@/context/ModalContext'
@@ -28,6 +28,7 @@ interface MoodPalette {
 
 function FloatingBottomNavbar() {
   const router = useRouter()
+  const pathname = usePathname()
   const { isMoodCheckInOpen } = useModal()
   const [userMood, setUserMood] = useState<number>(3)
   const [activeTab, setActiveTab] = useState<string>('home')
@@ -39,6 +40,16 @@ function FloatingBottomNavbar() {
       setUserMood(parseInt(savedMood))
     }
   }, [])
+
+  const hiddenRoutes = ['/admin/dashboard'];
+  const shouldHideNavbar = hiddenRoutes.some(route => pathname.startsWith(route))
+
+  console.log('Current pathname:', pathname)
+  console.log('Should hide navbar:', shouldHideNavbar)
+
+  if (shouldHideNavbar) {
+    return null
+  }
 
   // Don't render if mood check-in modal is open
   if (isMoodCheckInOpen) {
